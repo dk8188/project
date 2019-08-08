@@ -35,5 +35,52 @@ window.addEventListener('DOMContentLoaded',function () {
         }
 
     });
+    // timer
+    let deadline = '2019-8-9';
+    function getTimeRemaining(endtime) {
+        let t = Date.parse(endtime) - Date.parse(new Date()),
+        seconds = Math.floor((t/1000) % 60),
+        minutes = Math.floor((t/1000/60) % 60),
+        hours = Math.floor((t/(1000*60*60))),
+        days = Math.floor((t/(1000*60*60*24)));
+    return {
+        'total' : t,
+        'hours' : hours,
+        'minutes' : minutes,
+        'seconds' : seconds,
+        'days' : days
+      }; 
+    }
+
+    function setClock(id, endtime) {
+       let timer = document.getElementById(id),
+           days = timer.querySelector('.days'),
+           hours = timer.querySelector('.hours'),
+           minutes = timer.querySelector('.minutes'),
+           seconds = timer.querySelector('.seconds'),
+           timeInterval = setInterval(updateClock,1000);
+
+        function updateClock() {
+            let t = getTimeRemaining(endtime);
+            days.textContent = t.days + " days";
+            hours.textContent = t.hours + " h";
+            minutes.textContent = t.minutes + " min";
+            seconds.textContent = t.seconds + " sec";
+
+            if (t.days <=0){
+                let timer= document.getElementById(id);
+                days = timer.querySelector('.days');
+                days.textContent=" ";
+            }
+
+            else if (t.total <=0) {
+                clearInterval(timeInterval);
+               let timer= document.getElementById(id);
+               timer.removeAttribute = "Акция закончена!";
+            }
         
+        }
+
+    }
+    setClock('timer', deadline);
 });
