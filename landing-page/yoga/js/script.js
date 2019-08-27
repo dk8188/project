@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded',function () {
 
     });
     // timer
-    let deadline = '2019-8-9';
+    let deadline = '2019-08-09';
     function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()),
         seconds = Math.floor((t/1000) % 60),
@@ -58,6 +58,7 @@ window.addEventListener('DOMContentLoaded',function () {
            hours = timer.querySelector('.hours'),
            minutes = timer.querySelector('.minutes'),
            seconds = timer.querySelector('.seconds'),
+           text = timer.querySelector('.timer-action'),
            timeInterval = setInterval(updateClock,1000);
 
         function updateClock() {
@@ -67,20 +68,49 @@ window.addEventListener('DOMContentLoaded',function () {
             minutes.textContent = t.minutes + " min";
             seconds.textContent = t.seconds + " sec";
 
-            if (t.days <=0){
-                let timer= document.getElementById(id);
-                days = timer.querySelector('.days');
-                days.textContent=" ";
-            }
 
-            else if (t.total <=0) {
+           if (t.total <=0) {
                 clearInterval(timeInterval);
-               let timer= document.getElementById(id);
-               timer.removeAttribute = "Акция закончена!";
+                days.textContent = '00';
+                hours.textContent = '00';
+                minutes.textContent = '00';
+                seconds.textContent = '00';
+                text.textContent = "Акция закончена!";
+
             }
         
         }
 
     }
     setClock('timer', deadline);
+
+    // modal 
+ let desctiptionTab = document.querySelectorAll('.description-btn');
+ 
+    for (let i = 0; i < desctiptionTab.length; i++) {
+        desctiptionTab[i].addEventListener('click', function () {
+            Modal(this);
+        });
+    }
+function Modal(t) {
+        overlay.style.display = 'block';
+        t.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+    };
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+         close = document.querySelector('.popup-close');
+
+    more.addEventListener('click',function(){
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+    });
+  
+    close.addEventListener('click', function(){
+        overlay.style.display ='none';
+        more.classList.remove('more-splash');
+    });
+
+
 });
