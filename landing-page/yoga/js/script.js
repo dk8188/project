@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded',function () {
 
     });
     // timer
-    let deadline = '2019-08-09';
+    let deadline = '2019-09-10';
     function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()),
         seconds = Math.floor((t/1000) % 60),
@@ -75,7 +75,6 @@ window.addEventListener('DOMContentLoaded',function () {
                 hours.textContent = '00';
                 minutes.textContent = '00';
                 seconds.textContent = '00';
-                text.textContent = "Акция закончена!";
 
             }
         
@@ -111,6 +110,48 @@ function Modal(t) {
         overlay.style.display ='none';
         more.classList.remove('more-splash');
     });
+ 
+    let message = {
+        loading: "Loading...",
+        success:"thank you, see you soon",
+        failure: "something went wrong..."
+    };
+    let form = document.querySelector('.main-form'),
+        input = form.getElementsByTagName('input'),
+        statusMessage = document.createElement('div');
 
+        statusMessage.classList.add('status');
 
+   form.addEventListener('submit', function(event){
+     event.preventDefault();
+     form.appendChild(statusMessage);
+
+     let request = new XMLHttpRequest();
+     request.open('POST','server.php');
+     request.setRequestHeader('Content-type','application/json; charset=utf-8');
+     let formData = new FormData(form);
+
+     let obj = {};
+     formData.forEach(function(value,key) {
+        obj[key] = value;
+     });
+     let json = JSON.stringify(obj);
+
+     request.send(json);
+
+  
+     request.addEventListener('readystatechange', function(){
+        if (request.readyState < 4) {
+            statusMessage.innerHTML = message.loading;
+        } else if(request.readyState === 4 || request.status == 200) { // MUST use === is strictly equal to
+            statusMessage.innerHTML = message.success;
+        }
+          else {
+            statusMessage.innerHTML = message.failure;
+        }
+     });
+        for (let i = 0; i < input.length; i++) {
+          input[i].value = "";
+        }
+   });
 });
